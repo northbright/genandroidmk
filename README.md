@@ -1,6 +1,6 @@
 # genandroidmk
 
-#### Description
+#### Integrate Prebuilt Apps
 
 ###### Before Android 5.0 L  
 To integrate prebuilt apps which contains native libraries, you need to:  
@@ -13,5 +13,32 @@ There's no need to extract the libraries in APK and copy them to BSP.
 Android will extract the libs and copy them to `/system/app/APP_NAME/lib` automatically while building the system image.  
 We only need to specify the prebuilt libs(`LOCAL_PREBUILT_JNI_LIBS`) in `Android.mk`.  
 
-`genandroidmk` is a tool that help to generate `LOCAL_PREBUILT_JNI_LIBS` in `Android.mk`.  
+#### About This Tool
+`genandroidmk` is a tool that help to generate `LOCAL_PREBUILT_JNI_LIBS` and the whole `Android.mk` automatically.  
 It will check the `/lib` in APK and let users choose the CPU arch of libraries to fill the `LOCAL_PREBUILT_JNI_LIBS` variable.  
+
+#### How to Use
+
+    ./genandroidmk -i <input APK file> -n <app name>
+    Ex:
+    ./genandroidmk -i WeChat.apk -n WeChat
+
+###### Arguments:
+
+* `<input APK file>`  
+   abs path of APK and `Android.mk` will be outputed in the same folder
+* `<app name>`  
+   It will be used to set `LOCAL_MODULE` in `Android.mk`  
+   if it's not set, `LOCAL_MODULE` will be set to the APK name by default.
+
+###### Choose CPU Arch of native libraries:  
+If the APK contains multi-arch native libraries, you will be asked to select one arch:
+
+    Please select one of avaialbe arches in current APK:
+    ====================================
+    1: armeabi
+    2: armeabi-v7a
+    3: x86
+
+###### Output
+`Android.mk` will be put under the same folder as input APK file.
