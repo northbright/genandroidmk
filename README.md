@@ -29,7 +29,7 @@ It will check the `/lib` in APK and let users choose the CPU arch of libraries t
    abs path of APK and `Android.mk` will be outputed in the same folder
 * `<app name>`  
    It will be used to set `LOCAL_MODULE` in `Android.mk`  
-   if it's not set, `LOCAL_MODULE` will be set to the APK name by default.
+   if it's not set, `LOCAL_MODULE` will be set to the APK name(without ".apk") by default.
 
 ###### Choose CPU Arch of native libraries:  
 If the APK contains multi-arch native libraries, you will be asked to select one arch:
