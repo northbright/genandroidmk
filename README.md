@@ -34,7 +34,7 @@ It will check the `/lib` in APK and let users choose the CPU arch of libraries t
 ###### Choose CPU Arch of native libraries:  
 If the APK contains multi-arch native libraries, you will be asked to select one arch:
 
-    Please select one of avaialbe arches in current APK:
+    Please select one of available arches in current APK:
     ====================================
     1: armeabi
     2: armeabi-v7a
