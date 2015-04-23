@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/northbright/goutil"
+	"github.com/northbright/goutil/pathhelper"
 	"io/ioutil"
 	"path"
 	"regexp"
@@ -85,7 +85,7 @@ func main() {
 	defer r.Close()
 
 	if AppName == "" {
-		AppName = goutil.GetFileNameWithoutExt(ApkPath)
+		AppName = pathhelper.GetFileNameWithoutExt(ApkPath)
 		fmt.Printf("AppName is set to %s\n", AppName)
 	}
 
