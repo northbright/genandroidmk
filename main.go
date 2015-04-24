@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/northbright/goutil/pathhelper"
+	"github.com/northbright/pathhelper"
 	"io/ioutil"
 	"path"
 	"regexp"
