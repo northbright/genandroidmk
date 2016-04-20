@@ -2,6 +2,8 @@
 
 `genandroidmk` is a tool written in [Go](http://golang.org) that help to integrate prebuilt apps on Android(5.0 and later).  
 
+[![Build Status](https://travis-ci.org/northbright/genandroidmk.svg?branch=master)](https://travis-ci.org/northbright/genandroidmk)
+
 #### Details of Integration of Prebuilt Apps on Android.
 
 * Before Android 5.0 L  
