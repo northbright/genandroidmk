@@ -44,3 +44,6 @@ If the APK contains multi-arch native libraries, you will be asked to select one
 
 * Output
 `Android.mk` will be put under the same folder as input APK file.
+
+# License
+* [MIT License](./LICENSE)
