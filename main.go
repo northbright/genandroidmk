@@ -5,11 +5,12 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/northbright/pathhelper"
 	"io/ioutil"
 	"path"
 	"regexp"
 	"sort"
+
+	"github.com/northbright/pathhelper"
 )
 
 var (
