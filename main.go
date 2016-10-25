@@ -14,14 +14,14 @@ import (
 )
 
 var (
-	DEBUG         bool                = false
-	AppName       string              = ""
-	ApkPath       string              = ""
-	Arch          string              = "" // armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
-	ApkDir        string              = ""
-	AndroidmkPath string              = ""
-	pattern       string              = `^lib/(.*)/(.*\.so)$`     // find arch and .so name in zip file: FindStringSubmatch() should return [3]string, arrs[1] = arch, arrs[2] = .so name
-	libMap        map[string][]string = make(map[string][]string) // map to store libs. Key = arch, Value = lib slice
+	DEBUG         = false
+	AppName       = ""
+	ApkPath       = ""
+	Arch          = "" // armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
+	ApkDir        = ""
+	AndroidmkPath = ""
+	pattern       = `^lib/(.*)/(.*\.so)$`     // find arch and .so name in zip file: FindStringSubmatch() should return [3]string, arrs[1] = arch, arrs[2] = .so name
+	libMap        = make(map[string][]string) // map to store libs. Key = arch, Value = lib slice
 )
 
 func genAndroidmk(file, apk, moduleName, arch string, libs []string) (err error) {
