@@ -115,7 +115,7 @@ func main() {
 	if len(libMap) != 0 {
 		arrs := []string{}
 
-		for k, _ := range libMap {
+		for k := range libMap {
 			arrs = append(arrs, k)
 		}
 
