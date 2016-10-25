@@ -1,1 +1,8 @@
-genandroidmk
+*
+!.gitignore
+!LICENSE
+!*.md
+!*.yml
+!*.go
+!*.json
+!*.sh
