@@ -16,11 +16,11 @@ import (
 var (
 	// DEBUG is debug mode.
 	DEBUG         = false
-	AppName       = ""
-	ApkPath       = ""
-	Arch          = "" // armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
-	ApkDir        = ""
-	AndroidmkPath = ""
+	appName       = ""
+	apkPath       = ""
+	arch          = "" // armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
+	apkDir        = ""
+	androidmkPath = ""
 	pattern       = `^lib/(.*)/(.*\.so)$`     // find arch and .so name in zip file: FindStringSubmatch() should return [3]string, arrs[1] = arch, arrs[2] = .so name
 	libMap        = make(map[string][]string) // map to store libs. Key = arch, Value = lib slice
 )
@@ -66,34 +66,34 @@ func genAndroidmk(file, apk, moduleName, arch string, libs []string) (err error)
 }
 
 func main() {
-	flag.StringVar(&ApkPath, "i", "", "input APK file. Ex: -i ./WeChat.apk")
-	flag.StringVar(&AppName, "n", "", "LOCAL_MODULE in Android.mk. If not set, it'll use APK's name. Ex: -n WeChat")
+	flag.StringVar(&apkPath, "i", "", "input APK file. Ex: -i ./WeChat.apk")
+	flag.StringVar(&appName, "n", "", "LOCAL_MODULE in Android.mk. If not set, it'll use APK's name. Ex: -n WeChat")
 
 	flag.Parse()
 
-	fmt.Printf("AppName = %s\n", AppName)
-	fmt.Printf("ApkPath = %s\n", ApkPath)
+	fmt.Printf("appName = %s\n", appName)
+	fmt.Printf("apkPath = %s\n", apkPath)
 
-	if ApkPath == "" {
+	if apkPath == "" {
 		flag.PrintDefaults()
 		return
 	}
 
-	r, err := zip.OpenReader(ApkPath)
+	r, err := zip.OpenReader(apkPath)
 	if err != nil {
-		fmt.Printf("zip.OpenReader(%s) error: %s\n", ApkPath, err)
+		fmt.Printf("zip.OpenReader(%s) error: %s\n", apkPath, err)
 		return
 	}
 	defer r.Close()
 
-	if AppName == "" {
-		AppName = pathhelper.GetFileNameWithoutExt(ApkPath)
-		fmt.Printf("AppName is set to %s\n", AppName)
+	if appName == "" {
+		appName = pathhelper.GetFileNameWithoutExt(apkPath)
+		fmt.Printf("appName is set to %s\n", appName)
 	}
 
-	ApkDir = path.Dir(ApkPath)
-	AndroidmkPath = path.Join(ApkDir, "Android.mk")
-	fmt.Printf("Output Android.mk = %s\n", AndroidmkPath)
+	apkDir = path.Dir(apkPath)
+	androidmkPath = path.Join(apkDir, "Android.mk")
+	fmt.Printf("Output Android.mk = %s\n", androidmkPath)
 
 	re := regexp.MustCompile(pattern)
 
@@ -119,7 +119,7 @@ func main() {
 			arrs = append(arrs, k)
 		}
 
-		if _, ok := libMap[Arch]; !ok { // input Arch argument is incorrect, get 1st arch
+		if _, ok := libMap[arch]; !ok { // input arch argument is incorrect, get 1st arch
 			// sort arches by string
 			sort.Strings(arrs)
 		}
@@ -139,9 +139,9 @@ func main() {
 
 			index -= 1
 			if 0 <= index && index < len(arrs) {
-				Arch = arrs[index]
-				fmt.Printf("You choice: %s, libs:\n", Arch)
-				for _, v := range libMap[Arch] {
+				arch = arrs[index]
+				fmt.Printf("You choice: %s, libs:\n", arch)
+				for _, v := range libMap[arch] {
 					fmt.Printf("%s\n", v)
 				}
 				break
@@ -153,8 +153,8 @@ func main() {
 		fmt.Printf("no native libs in APK\n")
 	}
 
-	fmt.Printf("Start gnerating %s\n", AndroidmkPath)
-	if err := genAndroidmk(AndroidmkPath, ApkPath, AppName, Arch, libMap[Arch]); err != nil {
+	fmt.Printf("Start gnerating %s\n", androidmkPath)
+	if err := genAndroidmk(androidmkPath, apkPath, appName, arch, libMap[arch]); err != nil {
 		fmt.Printf("genAndroidmk() error: %s\n", err)
 		return
 	}
