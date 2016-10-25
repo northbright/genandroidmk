@@ -80,7 +80,7 @@ func main() {
 
 	r, err := zip.OpenReader(ApkPath)
 	if err != nil {
-		fmt.Printf("zip.OpenReader(%s) error: %s\n", err)
+		fmt.Printf("zip.OpenReader(%s) error: %s\n", ApkPath, err)
 		return
 	}
 	defer r.Close()
