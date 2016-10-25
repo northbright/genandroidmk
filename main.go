@@ -137,7 +137,7 @@ func main() {
 				return
 			}
 
-			index -= 1
+			index--
 			if 0 <= index && index < len(arrs) {
 				arch = arrs[index]
 				fmt.Printf("You choice: %s, libs:\n", arch)
