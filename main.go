@@ -14,6 +14,7 @@ import (
 )
 
 var (
+	// DEBUG is debug mode.
 	DEBUG         = false
 	AppName       = ""
 	ApkPath       = ""
