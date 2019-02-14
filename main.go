@@ -5,12 +5,11 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"github.com/northbright/pathhelper"
 	"io/ioutil"
 	"path"
 	"regexp"
 	"sort"
-
-	"github.com/northbright/pathhelper"
 )
 
 var (
@@ -18,6 +17,7 @@ var (
 	DEBUG         = false
 	appName       = ""
 	apkPath       = ""
+	defaultArch   = ""
 	arch          = "" // armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
 	apkDir        = ""
 	androidmkPath = ""
@@ -68,6 +68,7 @@ func genAndroidmk(file, apk, moduleName, arch string, libs []string) (err error)
 func main() {
 	flag.StringVar(&apkPath, "i", "", "input APK file. Ex: -i ./WeChat.apk")
 	flag.StringVar(&appName, "n", "", "LOCAL_MODULE in Android.mk. If not set, it'll use APK's name. Ex: -n WeChat")
+	flag.StringVar(&defaultArch, "d", "", "if this arch is in the APK, choose this automatically")
 
 	flag.Parse()
 
@@ -124,20 +125,38 @@ func main() {
 			sort.Strings(arrs)
 		}
 
+		hasDefaultArch := false
+		defaultArchIndex := -1
+
+		for key, value := range arrs {
+			fmt.Printf("aan %d %s \n", key, value)
+			if defaultArch == value {
+				hasDefaultArch = true
+				defaultArchIndex = key
+			}
+		}
+
 		for {
 			index := 1
-			fmt.Printf("\nPlease select one of avaialbe arches in current APK:\n====================================\n")
+			fmt.Printf("\nPlease select one of available arches in current APK:\n====================================\n")
 			for i, v := range arrs {
 				fmt.Printf("%d: %s\n", i+1, v)
 			}
 
-			// Wait user imput
-			if _, err := fmt.Scanf("%d", &index); err != nil {
-				fmt.Printf("fmt.Scanf() error: %s\n", err)
-				return
+			if len(arrs) == 1 {
+				index = 0
+				fmt.Printf("There is just one option. Auto-choosing \n\n")
+			} else if hasDefaultArch {
+				fmt.Printf("There is more then one option, but prefering %s \n\n", defaultArch)
+				index = defaultArchIndex
+			} else {
+				// Wait user input
+				if _, err := fmt.Scanf("%d", &index); err != nil {
+					fmt.Printf("fmt.Scanf() error: %s\n", err)
+					return
+				}
+				index--
 			}
-
-			index--
 			if 0 <= index && index < len(arrs) {
 				arch = arrs[index]
 				fmt.Printf("You choice: %s, libs:\n", arch)
@@ -153,7 +172,7 @@ func main() {
 		fmt.Printf("no native libs in APK\n")
 	}
 
-	fmt.Printf("Start gnerating %s\n", androidmkPath)
+	fmt.Printf("Started generating %s\n", androidmkPath)
 	if err := genAndroidmk(androidmkPath, apkPath, appName, arch, libMap[arch]); err != nil {
 		fmt.Printf("genAndroidmk() error: %s\n", err)
 		return
