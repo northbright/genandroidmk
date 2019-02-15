@@ -20,11 +20,11 @@ We only need to specify the prebuilt libs(`LOCAL_PREBUILT_JNI_LIBS`) in `Android
 
 #### How it Works
 * It'll generate `LOCAL_PREBUILT_JNI_LIBS` and the whole `Android.mk` automatically.
-* It will check the `/lib` in APK and let users choose the CPU arch of libraries to fill the `LOCAL_PREBUILT_JNI_LIBS` variable.
+* It will check the `/lib` in APK and use a default CPU arch or let users choose the CPU arch of libraries to fill the `LOCAL_PREBUILT_JNI_LIBS` variable.
 
 #### How to Use
 
-    ./genandroidmk -i <input APK file> -n <app name>
+    ./genandroidmk -i <input APK file> -n <app name> -d <default arch>
     Ex:
     ./genandroidmk -i WeChat.apk -n WeChat
 
@@ -35,9 +35,13 @@ We only need to specify the prebuilt libs(`LOCAL_PREBUILT_JNI_LIBS`) in `Android
   * `<app name>`  
    It will be used to set `LOCAL_MODULE` in `Android.mk`  
    if it's not set, `LOCAL_MODULE` will be set to the APK name(without ".apk") by default.
+  * `<default arch>`
+   Specify a default architecture.
 
 * Choose CPU Arch of native libraries:  
-If the APK contains multi-arch native libraries, you will be asked to select one arch:
+If the APK contains multi-arch native libraries, 
+and there's **NO** default architecture specified(`-d` argument),
+you will be asked to select one arch:
 
         Please select one of available arches in current APK:
         ====================================
@@ -50,3 +54,7 @@ If the APK contains multi-arch native libraries, you will be asked to select one
 
 #### License
 * [MIT License](./LICENSE)
+
+#### Thanks
+* [Kushtrim Pacaj](https://github.com/KushtrimPacaj)
+  * Contributed the new argument: [`-d <default arch>`](https://github.com/northbright/genandroidmk/pull/1) that's useful for CI / CD integration
