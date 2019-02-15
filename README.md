@@ -31,12 +31,16 @@ We only need to specify the prebuilt libs(`LOCAL_PREBUILT_JNI_LIBS`) in `Android
 * Arguments:
 
   * `<input APK file>`  
-   abs path of APK and `Android.mk` will be outputed in the same folder
+    
+    abs path of APK and `Android.mk` will be outputed in the same folder
   * `<app name>`  
-   It will be used to set `LOCAL_MODULE` in `Android.mk`  
-   if it's not set, `LOCAL_MODULE` will be set to the APK name(without ".apk") by default.
+    
+    It will be used to set `LOCAL_MODULE` in `Android.mk`  
+    if it's not set, `LOCAL_MODULE` will be set to the APK name(without ".apk") by default.
   * `<default arch>`
-   Specify a default architecture.
+
+    Specify a default architecture.
+    When a default architecture is specified, it will not require users to choose the CPU architecure that's useful for CI / CD integration.
 
 * Choose CPU Arch of native libraries:  
 If the APK contains multi-arch native libraries, 
